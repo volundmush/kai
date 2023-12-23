@@ -1,0 +1,38 @@
+#!/bin/bash
+
+echo "Checking for and acquiring necessary libraries..."
+
+if [ -d "libs/asio" ]; then
+echo "Found ASIO!"
+else
+echo "Cannot find ASIO, obtaining from GITHUB..."
+git clone https://github.com/chriskohlhoff/asio libs/asio
+fi
+
+if [ -d "libs/sqlitepp" ]; then
+echo "Found SQLITEPP!"
+else
+echo "Cannot find SQLITEPP, obtaining from GITHUB..."
+git clone https://github.com/mpaland/sqlitepp libs/sqlitepp
+fi
+
+if [ -d "libs/fmt" ]; then
+echo "Found LIBFMT!"
+else
+echo "Cannot find LIBFMT, obtaining from GITHUB..."
+git clone https://github.com/fmtlib/fmt libs/fmt
+fi
+
+if [ -d "libs/json" ]; then
+echo "Found JSON!"
+else
+echo "Cannot find JSON, obtaining from GITHUB..."
+git clone https://github.com/nlohmann/json libs/json
+fi
+
+if [ -d "libs/random" ]; then
+echo "Found Effolkronium's Random!"
+else
+echo "Cannot find Effolkronium's Random, obtaining from GITHUB..."
+git clone https://github.com/effolkronium/random libs/random
+fi

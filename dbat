@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# This script needs to run "./bin/circle", saving its .pid as server.pid in cwd.
+# If circle exits and returns anything except a straight 0, then the process is restarted.
+
+while true; do
+    nohup ./bin/circle > server.log < /dev/null &
+    echo $! > server.pid
+    wait $!
+    exit_status=$?
+    if [ $exit_status -eq 0 ]; then
+        exit 0
+    fi
+done

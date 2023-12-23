@@ -1,0 +1,128 @@
+#!/bin/bash
+ulimit -c unlimited
+
+process_running() {
+  if [ ! -f "$1.pid" ]; then
+    return 1
+  fi
+
+  if ps -p $(cat "$1.pid") > /dev/null 2>&1; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+start_thermite() {
+  nohup ./thermite/target/debug/thermite &> thermite.log < /dev/null &
+  echo $! > thermite.pid
+}
+
+start_server() {
+  nohup ./dbat &
+}
+
+start_game() {
+    if(process_running "thermite"); then
+        echo "Thermite is already running!"
+    else
+        echo "Starting Thermite..."
+        start_thermite
+    fi
+
+    if(process_running "server"); then
+        echo "Server is already running!"
+    else
+        echo "Starting server..."
+        start_server
+    fi
+}
+
+stop_game() {
+      if process_running "server"; then
+          echo "Stopping server..."
+          kill $(cat server.pid)
+          rm server.pid
+      else
+          echo "Server is not running!"
+      fi
+
+      if process_running "thermite"; then
+          echo "Stopping thermite..."
+          kill $(cat thermite.pid)
+          rm thermite.pid
+      else
+          echo "Thermite is not running!"
+      fi
+}
+
+restart_game() {
+  if(process_running "thermite"); then
+          echo "Thermite is already running!"
+      else
+          echo "Starting Thermite..."
+          start_thermite
+      fi
+
+    if(process_running "server"); then
+        echo "Restarting server..."
+        kill -SIGUSR1 $(cat server.pid)
+    else
+        echo "Starting server..."
+        start_server
+    fi
+}
+
+reload_game() {
+  if(process_running "thermite"); then
+          echo "Thermite is already running!"
+      else
+          echo "Starting Thermite..."
+          start_thermite
+      fi
+
+    if(process_running "server"); then
+        echo "Reloading server..."
+        kill -SIGUSR2 $(cat server.pid)
+    else
+        echo "Starting server..."
+        start_server
+    fi
+}
+
+show_status() {
+  if process_running "server"; then
+    echo "Server is running!"
+  else
+    echo "Server is not running!"
+  fi
+
+  if process_running "thermite"; then
+    echo "Thermite is running!"
+  else
+    echo "Thermite is not running!"
+  fi
+}
+
+case "$1" in
+  start)
+    start_game
+    ;;
+  stop)
+    stop_game
+    ;;
+  restart)
+    restart_game
+    ;;
+  reload)
+    reload_game
+    ;;
+  status)
+    show_status
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|reload|status}"
+    exit 1
+esac
+
+exit 0

@@ -1,0 +1,9 @@
+[submodule "libs/asio"]
+	path = libs/asio
+	url = https://github.com/chriskohlhoff/asio
+[submodule "libs/sqlitepp"]
+	path = libs/sqlitepp
+	url = https://github.com/mpaland/sqlitepp
+[submodule "libs/fmt"]
+	path = libs/fmt
+	url = https://github.com/fmtlib/fmt
