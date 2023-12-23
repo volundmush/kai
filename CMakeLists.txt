@@ -76,5 +76,9 @@ add_executable(kai apps/kai.cpp)
 target_link_libraries(kai kaimud ${KAI_LINK_LIBRARIES})
 target_include_directories(kai PUBLIC ${KAI_INCLUDE_DIRS})
 
+add_executable(test apps/test.cpp)
+target_link_libraries(test kaimud ${KAI_LINK_LIBRARIES})
+target_include_directories(test PUBLIC ${KAI_INCLUDE_DIRS})
+
 
 SET(kai_link ${CMAKE_INSTALL_PREFIX}/bin/)

@@ -90,7 +90,7 @@ private:
 
 struct CompiledScript {
     const std::string_view code;
-    const std::string_view bytecode;
+    const std::shared_ptr<std::string> bytecode;
 };
 
 class GameObject;
